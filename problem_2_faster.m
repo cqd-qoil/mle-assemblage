@@ -61,9 +61,9 @@ data=data0;
 
 I=eye(2);
 sigma=zeros(2,2,3);%single-qubit Pauli matrices
-sigma(:,:,1)=[0,1;1,0];
-sigma(:,:,2)=[0,-1i;1i,0];
-sigma(:,:,3)=[1,0;0,-1];
+sigma(:,:,1)=[1,0;0,-1];
+sigma(:,:,2)=[0,1;1,0];
+sigma(:,:,3)=[0,-1i;1i,0];
 sigma(:,:,4)=eye(2);
 
 NEG=zeros(size(data,1),size(data,3),2);%total number of copies for each group of POVM

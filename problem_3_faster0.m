@@ -11,7 +11,7 @@ kMax=1;%meaning that Charlie is deleted. If it is 2, Charlie is recovered.
 %Now use https://docs.mosek.com/latest/install/installation.html 4.3 Setting up the License
 %restart MATLAB and run mosekdiag. If unsuccessful, maybe need to add MOSEK
 %installed file to MATLAB system path.
-%Now we can run 5.2 “Hello World!” in MOSEK in
+%Now we can run 5.2 “Hello World!��? in MOSEK in
 %https://docs.mosek.com/latest/toolbox/design.html#hello-world-in-mosek for
 %a test.
 
@@ -31,7 +31,7 @@ EpsonX=3;%2/22/3/33 is Problem II/II'/III/III';
 
 %--------------------------------%
 
-data=zeros(9,6,size(1,2),2)%the last(fourth) index means AB or AC. So it is with NEG, f, p, N, M, etc.
+data=zeros(9,6,size(1,2),2);%the last(fourth) index means AB or AC. So it is with NEG, f, p, N, M, etc.
 %9:Alice 3 povms * Bob 3 povms; 6:outcomes, hh hv vh vv nullH nullV;
 %8:different alpha_n; 2: Bob/Charlie
 data(:,:,1,1)=bobData;
@@ -66,7 +66,8 @@ sigma(:,:,4)=eye(2);
 NEG=zeros(size(data,1),size(data,3),2);%total number of copies for each group of POVM
 for i=1:size(data,1)
     for j=1:size(data,3)
-        NEG(i,j,1)=sum(data(i,:,j,1));NEG(i,j,2)=sum(data(i,:,j,2));
+        NEG(i,j,1)=sum(data(i,:,j,1));
+        NEG(i,j,2)=sum(data(i,:,j,2));
     end
 end
 
@@ -77,7 +78,8 @@ yMax=3;%number of different POVM on Bob's side
 
 E=zeros(2,2,bMax,yMax);%POVM on Bob/Charlie, 3rd index for outcome and 4th index for Bob's measurement direction
 for j=1:yMax
-    E(:,:,1,j)=(eye(2)+sigma(:,:,j))/2;E(:,:,2,j)=(eye(2)-sigma(:,:,j))/2;%corresponding to + and - measurements respectively
+    E(:,:,1,j)=(eye(2)+sigma(:,:,j))/2;
+    E(:,:,2,j)=(eye(2)-sigma(:,:,j))/2;%corresponding to + and - measurements respectively
 end
 
 if yMax*xMax~=size(data,1)||bMax*aMax~=size(data,2)
@@ -126,7 +128,8 @@ for n=1:NAlpha
             for x=1:xMax
                 T(:,:,n,1)=rho0(1:2,1:2)+rho0(3:4,3:4);%initial guessing of Bob's state to be reconstructed
                 T(:,:,n,2)=rho0(1:2,1:2)+rho0(3:4,3:4);
-                Assem(:,:,a,x,n,1)=T(:,:,n,1)*((a<aMax)*epsilon/(aMax-1)+(a==aMax)*(1-epsilon));Assem(:,:,a,x,n,2)=Assem(:,:,a,x,n,1);
+                Assem(:,:,a,x,n,1)=T(:,:,n,1)*((a<aMax)*epsilon/(aMax-1)+(a==aMax)*(1-epsilon));
+                Assem(:,:,a,x,n,2)=Assem(:,:,a,x,n,1);
             end
         end
     end
@@ -282,6 +285,7 @@ RelativeFreqErr=(norm(temv2(:),'fro'))/(norm(temv3(:),'fro'));
 % disp('[errMax,RelativeFreqErr,MTest,DFreedom]')
 % disp([errMax,RelativeFreqErr,MTestResult,df])
 
+Assem = Assem(:,:,:,:,NAlpha,1);
 
 end
 % save('test2.mat','Assem','T','epsx');

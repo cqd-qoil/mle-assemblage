@@ -1,4 +1,4 @@
-function MTestResult = problem_5_faster(bobData, Assem)
+function [MTestResult, Assem] = problem_5_faster(bobData, Assem)
 yalmip('clear');
 %Here we add a patch that fixes a bug when calculating the multinomial test value.
 %We first try fixing all the scalars while optimizing the matrices. Using
@@ -39,7 +39,7 @@ data=zeros(9,6,size(1,2),2);%the last(fourth) index means AB or AC. So it is wit
 %9:Alice 3 povms * Bob 3 povms; 6:outcomes, hh hv vh vv nullH nullV;
 %8:different alpha_n; 2: Bob/Charlie
 
-data(:,:,8,1)= bobData;
+data(:,:,1,1)= bobData;
 
 
 if LastTwoSum~=0
@@ -85,7 +85,8 @@ yMax=3;%number of different POVM on Bob's side
 
 E=zeros(2,2,bMax,yMax);%POVM on Bob/Charlie, 3rd index for outcome and 4th index for Bob's measurement direction
 for j=1:yMax
-    E(:,:,1,j)=(eye(2)+sigma(:,:,j))/2;E(:,:,2,j)=(eye(2)-sigma(:,:,j))/2;%corresponding to + and - measurements respectively
+    E(:,:,1,j)=(eye(2)+sigma(:,:,j))/2;
+    E(:,:,2,j)=(eye(2)-sigma(:,:,j))/2;%corresponding to + and - measurements respectively
 end
 
 if yMax*xMax~=size(data,1)||bMax*aMax~=size(data,2)
@@ -155,7 +156,7 @@ for n=1:NAlpha
                         end
                     end
                 end
-                optimize(Fcons,-obj/10^5,ops)
+                optimize(Fcons,-obj/10^5,ops);
 
                 T=value(T);
 
@@ -211,7 +212,7 @@ for n=1:NAlpha
                                 +data(yMax*(x-1)+y,bMax*(3-1)+b,n,k)*log(real(trace(Sig{3}*E(:,:,b,y))));
                             end
                         end
-                        optimize(Fcons,-obj/10^5,ops)
+                        optimize(Fcons,-obj/10^5,ops);
                         nowLag1=value(obj);nowgamma1=gamma(x,n,k);noweps1=value(epsx0);
 
                         %how about decrease gamma a little
